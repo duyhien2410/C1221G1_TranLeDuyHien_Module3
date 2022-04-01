@@ -290,8 +290,36 @@ insert into hop_dong_chi_tiet
 values (8,2,12,2);
 
 -- TASK 2
+select *
+from nhan_vien
+where ho_ten regexp '^[h|k|t].{0,14}$';
 
+-- TASK 3
+select k_h.ma_khach_hang, k_h.ho_ten, (YEAR(CURDATE()) - YEAR(k_h.ngay_sinh)) as so_tuoi, k_h.dia_chi  
+from khach_hang k_h
+where ((YEAR(CURDATE()) - YEAR(k_h.ngay_sinh)) between 18 and 50) 
+and k_h.dia_chi like '%Đà Nẵng' or k_h.dia_chi like '%Quảng Trị';
 
+-- TASK 4
+select k_h.ma_khach_hang, k_h.ho_ten, k_h.ma_loai_khach, count(h_d.ma_khach_hang) as so_lan_book_dich_vu
+from khach_hang k_h inner join hop_dong h_d on k_h.ma_khach_hang = h_d.ma_khach_hang
+where k_h.ma_loai_khach = 1
+group by k_h.ma_khach_hang
+order by count(h_d.ma_khach_hang);
+
+-- TASK 5
+select k_h.ma_khach_hang, k_h.ho_ten, l_k.ten_loai_khach, h_d.ma_hop_dong, 
+d_v.ten_dich_vu, h_d.ngay_lam_hop_dong, h_d.ngay_ket_thuc,
+sum(d_v.chi_phi_thue + coalesce((h_d_c_t.so_luong * d_v_d_k.gia),0)) as tong_tien
+from khach_hang k_h inner join loai_khach l_k on k_h.ma_loai_khach = l_k.ma_loai_khach
+left join hop_dong h_d on k_h.ma_khach_hang = h_d.ma_khach_hang
+left join dich_vu d_v on h_d.ma_dich_vu = d_v.ma_dich_vu
+left join hop_dong_chi_tiet h_d_c_t on h_d.ma_hop_dong = h_d_c_t.ma_hop_dong
+left join dich_vu_di_kem d_v_d_k on h_d_c_t.ma_dich_vu_di_kem = d_v_d_k.ma_dich_vu_di_kem
+group by k_h.ma_khach_hang
+order by k_h.ma_khach_hang;
+
+-- TASK 6
 
 
 
