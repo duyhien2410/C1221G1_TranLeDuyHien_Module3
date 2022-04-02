@@ -310,7 +310,7 @@ order by count(h_d.ma_khach_hang);
 -- TASK 5
 select k_h.ma_khach_hang, k_h.ho_ten, l_k.ten_loai_khach, h_d.ma_hop_dong, 
 d_v.ten_dich_vu, h_d.ngay_lam_hop_dong, h_d.ngay_ket_thuc,
-sum(d_v.chi_phi_thue + coalesce((h_d_c_t.so_luong * d_v_d_k.gia),0)) as tong_tien
+sum(d_v.chi_phi_thue + ifnull((h_d_c_t.so_luong * d_v_d_k.gia),0)) as tong_tien
 from khach_hang k_h inner join loai_khach l_k on k_h.ma_loai_khach = l_k.ma_loai_khach
 left join hop_dong h_d on k_h.ma_khach_hang = h_d.ma_khach_hang
 left join dich_vu d_v on h_d.ma_dich_vu = d_v.ma_dich_vu
@@ -339,17 +339,33 @@ from dich_vu d_v inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
 where h_d.ngay_lam_hop_dong between '2021-01-01 00:00:00' and '2021-12-31 23:59:59')
 group by d_v.ten_dich_vu;
 
-select d_v.ma_dich_vu, d_v.ten_dich_vu, d_v.dien_tich, d_v.so_nguoi_toi_da,
-d_v.chi_phi_thue, l_d_v.ten_loai_dich_vu
-from dich_vu d_v inner join loai_dich_vu l_d_v on d_v.ma_loai_dich_vu = l_d_v.ma_loai_dich_vu
-inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
-where d_v.ten_dich_vu in 
-(select d_v.ten_dich_vu 
-from dich_vu d_v inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
-where year(h_d.ngay_lam_hop_dong) = '2020')
-;
+-- TASK 8
+select distinct khach_hang.ho_ten
+from khach_hang;
 
+select k_h.ho_ten
+from khach_hang k_h
+group by k_h.ho_ten;
 
+select khach_hang.ho_ten 
+from khach_hang 
+union 
+select khach_hang.ho_ten 
+from khach_hang;
+
+-- TASK 9
+select month(h_d.ngay_lam_hop_dong) thang_trong_nam_2021, 
+count(month(h_d.ngay_lam_hop_dong)) so_khach_dat_phong
+from hop_dong h_d
+where year(ngay_lam_hop_dong) = '2021'
+group by thang_trong_nam_2021
+order by thang_trong_nam_2021;
+
+-- TASK 10
+select h_d.ma_hop_dong, h_d.ngay_lam_hop_dong, h_d.ngay_ket_thuc, h_d.tien_dat_coc, 
+sum(ifnull(so_luong,0)) as so_luong_dich_vu_di_kem
+from hop_dong h_d left join hop_dong_chi_tiet h_d_c_t on h_d.ma_hop_dong = h_d_c_t.ma_hop_dong
+group by h_d.ma_hop_dong;
 
 
 
