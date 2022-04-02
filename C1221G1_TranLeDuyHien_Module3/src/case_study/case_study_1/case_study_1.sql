@@ -316,11 +316,38 @@ left join hop_dong h_d on k_h.ma_khach_hang = h_d.ma_khach_hang
 left join dich_vu d_v on h_d.ma_dich_vu = d_v.ma_dich_vu
 left join hop_dong_chi_tiet h_d_c_t on h_d.ma_hop_dong = h_d_c_t.ma_hop_dong
 left join dich_vu_di_kem d_v_d_k on h_d_c_t.ma_dich_vu_di_kem = d_v_d_k.ma_dich_vu_di_kem
-group by k_h.ma_khach_hang
+group by h_d.ma_hop_dong
 order by k_h.ma_khach_hang;
 
 -- TASK 6
+select d_v.ma_dich_vu, d_v.ten_dich_vu, d_v.dien_tich, d_v.chi_phi_thue, l_d_v.ten_loai_dich_vu
+from dich_vu d_v inner join loai_dich_vu l_d_v on d_v.ma_loai_dich_vu = l_d_v.ma_loai_dich_vu
+inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
+where d_v.ten_dich_vu not in  
+(select d_v.ten_dich_vu from dich_vu d_v inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
+where h_d.ngay_lam_hop_dong between '2021-01-01 00:00:00' and '2021-03-31 23:59:59')
+group by d_v.ma_dich_vu;
 
+-- TASK 7
+select d_v.ma_dich_vu, d_v.ten_dich_vu, d_v.dien_tich, d_v.so_nguoi_toi_da,
+d_v.chi_phi_thue, l_d_v.ten_loai_dich_vu
+from dich_vu d_v inner join loai_dich_vu l_d_v on d_v.ma_loai_dich_vu = l_d_v.ma_loai_dich_vu
+inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
+where d_v.ten_dich_vu not in 
+(select d_v.ten_dich_vu 
+from dich_vu d_v inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
+where h_d.ngay_lam_hop_dong between '2021-01-01 00:00:00' and '2021-12-31 23:59:59')
+group by d_v.ten_dich_vu;
+
+select d_v.ma_dich_vu, d_v.ten_dich_vu, d_v.dien_tich, d_v.so_nguoi_toi_da,
+d_v.chi_phi_thue, l_d_v.ten_loai_dich_vu
+from dich_vu d_v inner join loai_dich_vu l_d_v on d_v.ma_loai_dich_vu = l_d_v.ma_loai_dich_vu
+inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
+where d_v.ten_dich_vu in 
+(select d_v.ten_dich_vu 
+from dich_vu d_v inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
+where year(h_d.ngay_lam_hop_dong) = '2020')
+;
 
 
 
