@@ -367,6 +367,60 @@ sum(ifnull(so_luong,0)) as so_luong_dich_vu_di_kem
 from hop_dong h_d left join hop_dong_chi_tiet h_d_c_t on h_d.ma_hop_dong = h_d_c_t.ma_hop_dong
 group by h_d.ma_hop_dong;
 
+-- TASK 11
+select d_v_d_k.ma_dich_vu_di_kem , d_v_d_k.ten_dich_vu_di_kem
+from khach_hang k_h inner join hop_dong h_d on k_h.ma_khach_hang = h_d.ma_khach_hang
+inner join hop_dong_chi_tiet h_d_c_t on h_d.ma_hop_dong = h_d_c_t.ma_hop_dong
+inner join dich_vu_di_kem d_v_d_k on h_d_c_t.ma_dich_vu_di_kem = d_v_d_k.ma_dich_vu_di_kem
+inner join loai_khach l_k on k_h.ma_loai_khach = l_k.ma_loai_khach
+where (l_k.ten_loai_khach = 'Diamond') and (k_h.dia_chi like '%Vinh' or '%Quảng Ngãi');
+
+-- TASK 12
+select h_d.ma_hop_dong, n_v.ho_ten, k_h.ho_ten, k_h.so_dien_thoai, d_v.ma_dich_vu,
+d_v.ten_dich_vu, sum(ifnull(so_luong,0)) as so_luong_dich_vu_di_kem
+from hop_dong h_d left join nhan_vien n_v on h_d.ma_nhan_vien = n_v.ma_nhan_vien
+left join khach_hang k_h on h_d.ma_khach_hang = k_h.ma_khach_hang
+left join hop_dong_chi_tiet h_d_c_t on h_d.ma_hop_dong = h_d_c_t.ma_hop_dong
+left join dich_vu d_v on h_d.ma_dich_vu = d_v.ma_dich_vu
+where d_v.ten_dich_vu in
+(select d_v.ten_dich_vu from hop_dong h_d inner join dich_vu d_v on h_d.ma_dich_vu = d_v.ma_dich_vu
+where h_d.ngay_lam_hop_dong between '2020-10-01 00:00:00' and '2020-12-31 23:59:59')
+group by h_d.ma_hop_dong;
+
+-- TASK 13
+select d_v_d_k.ma_dich_vu_di_kem, d_v_d_k.ten_dich_vu_di_kem, 
+sum(so_luong) as so_luong_dich_vu_di_kem
+from hop_dong_chi_tiet h_d_c_t inner join dich_vu_di_kem d_v_d_k 
+on h_d_c_t.ma_dich_vu_di_kem = d_v_d_k.ma_dich_vu_di_kem
+group by d_v_d_k.ma_dich_vu_di_kem
+having sum(so_luong) in
+(select max(so_luong)
+from hop_dong_chi_tiet);
+
+-- TASK 14
+select h_d.ma_hop_dong, l_d_v.ten_loai_dich_vu, d_v_d_k.ten_dich_vu_di_kem,
+count(h_d_c_t.ma_dich_vu_di_kem) as so_lan_su_dung
+from hop_dong h_d inner join dich_vu d_v on h_d.ma_dich_vu = d_v.ma_dich_vu
+inner join loai_dich_vu l_d_v on d_v.ma_loai_dich_vu = l_d_v.ma_loai_dich_vu
+inner join hop_dong_chi_tiet h_d_c_t on h_d.ma_hop_dong = h_d_c_t.ma_hop_dong
+inner join dich_vu_di_kem d_v_d_k on h_d_c_t.ma_dich_vu_di_kem = d_v_d_k.ma_dich_vu_di_kem
+group by d_v_d_k.ten_dich_vu_di_kem
+having count(h_d_c_t.ma_dich_vu_di_kem) = 1
+order by h_d.ma_hop_dong;
+
+-- TASK 15
+select n_v.ma_nhan_vien, n_v.ho_ten, t_d.ten_trinh_do, n_v.so_dien_thoai, n_v.dia_chi
+from nhan_vien n_v inner join hop_dong h_d on h_d.ma_nhan_vien = n_v.ma_nhan_vien
+inner join trinh_do t_d on n_v.ma_trinh_do = t_d.ma_trinh_do
+inner join bo_phan b_p on n_v.ma_bo_phan = b_p.ma_bo_phan
+where year(h_d.ngay_lam_hop_dong) between '2020' and '2021'
+group by n_v.ma_nhan_vien
+having count(h_d.ma_hop_dong) < 4
+order by n_v.ma_nhan_vien;
+
+-- TASK 16
+
+
 
 
 
