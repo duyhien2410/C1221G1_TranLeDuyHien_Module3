@@ -339,6 +339,17 @@ from dich_vu d_v inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
 where h_d.ngay_lam_hop_dong between '2021-01-01 00:00:00' and '2021-12-31 23:59:59')
 group by d_v.ten_dich_vu;
 
+select d_v.ma_dich_vu, d_v.ten_dich_vu, d_v.dien_tich, d_v.so_nguoi_toi_da,
+d_v.chi_phi_thue, l_d_v.ten_loai_dich_vu
+from dich_vu d_v inner join loai_dich_vu l_d_v on d_v.ma_loai_dich_vu = l_d_v.ma_loai_dich_vu
+inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
+where h_d.ngay_lam_hop_dong between '2020-01-01 00:00:00' and '2020-12-31 23:59:59'
+group by d_v.ten_dich_vu
+having d_v.ten_dich_vu not in
+(select d_v.ten_dich_vu 
+from dich_vu d_v inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
+where h_d.ngay_lam_hop_dong between '2021-01-01 00:00:00' and '2021-12-31 23:59:59');
+
 -- TASK 8
 select distinct khach_hang.ho_ten
 from khach_hang;
@@ -385,9 +396,12 @@ left join dich_vu d_v on h_d.ma_dich_vu = d_v.ma_dich_vu
 where d_v.ten_dich_vu in
 (select d_v.ten_dich_vu from hop_dong h_d inner join dich_vu d_v on h_d.ma_dich_vu = d_v.ma_dich_vu
 where h_d.ngay_lam_hop_dong between '2020-10-01 00:00:00' and '2020-12-31 23:59:59')
-group by h_d.ma_hop_dong;
+group by h_d.ma_hop_dong
+having d_v.ten_dich_vu not in
+(select d_v.ten_dich_vu from hop_dong h_d inner join dich_vu d_v on h_d.ma_dich_vu = d_v.ma_dich_vu
+where h_d.ngay_lam_hop_dong between '2021-01-01 00:00:00' and '2020-06-30 23:59:59');
 
--- TASK 13
+-- TASK 13 (chưa chắc chắn)
 select d_v_d_k.ma_dich_vu_di_kem, d_v_d_k.ten_dich_vu_di_kem, 
 sum(so_luong) as so_luong_dich_vu_di_kem
 from hop_dong_chi_tiet h_d_c_t inner join dich_vu_di_kem d_v_d_k 
@@ -409,7 +423,7 @@ having count(h_d_c_t.ma_dich_vu_di_kem) = 1
 order by h_d.ma_hop_dong;
 
 -- TASK 15
-select n_v.ma_nhan_vien, n_v.ho_ten, t_d.ten_trinh_do, n_v.so_dien_thoai, n_v.dia_chi
+select n_v.ma_nhan_vien, n_v.ho_ten, t_d.ten_trinh_do, b_p.ten_bo_phan, n_v.so_dien_thoai, n_v.dia_chi
 from nhan_vien n_v inner join hop_dong h_d on h_d.ma_nhan_vien = n_v.ma_nhan_vien
 inner join trinh_do t_d on n_v.ma_trinh_do = t_d.ma_trinh_do
 inner join bo_phan b_p on n_v.ma_bo_phan = b_p.ma_bo_phan
@@ -419,19 +433,82 @@ having count(h_d.ma_hop_dong) < 4
 order by n_v.ma_nhan_vien;
 
 -- TASK 16
+set sql_safe_updates = 0;
+delete 
+from nhan_vien n_v
+where n_v.ma_nhan_vien not in
+(select distinct ma_nhan_vien
+from hop_dong
+where year(hop_dong.ngay_lam_hop_dong) between '2019' and '2021');
+set sql_safe_updates = 1;
 
+-- TASK 17
+update khach_hang
+set ma_loai_khach = 1
+where ma_loai_khach !=1 
+and ma_khach_hang in 
+(select tong_tien.ma_khach_hang 
+from (select khach_hang.ma_khach_hang
+from khach_hang 
+inner join hop_dong  on hop_dong.ma_khach_hang=khach_hang.ma_khach_hang
+inner join dich_vu  on dich_vu.ma_dich_vu=hop_dong.ma_dich_vu
+inner join hop_dong_chi_tiet on hop_dong.ma_hop_dong=hop_dong_chi_tiet.ma_hop_dong
+inner join dich_vu_di_kem on hop_dong_chi_tiet.ma_dich_vu_di_kem = dich_vu_di_kem.ma_dich_vu_di_kem
+group by khach_hang.ma_khach_hang
+having (SUM(ifnull(dich_vu.chi_phi_thue,0) + 
+ifnull(dich_vu_di_kem.gia,0)* ifnull(hop_dong_chi_tiet.so_luong,0))>=10000000)) as tong_tien);
 
+select khach_hang.ma_khach_hang ,
+khach_hang.ho_ten,
+khach_hang.ma_loai_khach = 1 as loai_dich_vu
+from khach_hang;
 
+select *
+from khach_hang;
 
+-- TASK 18
 
+set sql_safe_updates = 0;
+set foreign_key_checks = 0;
+delete 
+from khach_hang k_h
+where k_h.ma_khach_hang in
+(select distinct ma_khach_hang
+from hop_dong
+where year(hop_dong.ngay_lam_hop_dong) between '0' and '2020');
+set foreign_key_checks = 1;
+set sql_safe_updates = 1;
 
+select *
+from khach_hang;
 
+-- TASK 19
+create temporary table update_gia
+select d_v_d_k.ma_dich_vu_di_kem, d_v_d_k.ten_dich_vu_di_kem
+from dich_vu_di_kem d_v_d_k inner join hop_dong_chi_tiet h_d_c_t on d_v_d_k.ma_dich_vu_di_kem = h_d_c_t.ma_dich_vu_di_kem
+inner join hop_dong h_d on h_d_c_t.ma_hop_dong = h_d.ma_hop_dong
+where h_d_c_t.so_luong > 10 and
+year(h_d.ngay_lam_hop_dong) = 2020;
 
+select * from update_gia;
 
+update dich_vu_di_kem
+set dich_vu_di_kem.gia = dich_vu_di_kem.gia*2
+where dich_vu_di_kem.ma_dich_vu_di_kem in 
+(select update_gia.ma_dich_vu_di_kem from update_gia);
 
+drop temporary table update_gia;
 
+-- TASK 20
+select n_v.ma_nhan_vien as id, n_v.ho_ten, n_v.email,
+ n_v.so_dien_thoai, n_v.ngay_sinh, n_v.dia_chi
+from nhan_vien n_v
+union all
+select k_h.ma_khach_hang as id, k_h.ho_ten, k_h.email,
+ k_h.so_dien_thoai, k_h.ngay_sinh, k_h.dia_chi
+ from khach_hang k_h;
 
-
+-- TASK 21
 
 
 
