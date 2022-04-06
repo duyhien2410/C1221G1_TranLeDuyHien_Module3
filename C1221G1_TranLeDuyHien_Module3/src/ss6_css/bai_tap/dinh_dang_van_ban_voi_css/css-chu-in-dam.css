@@ -1,0 +1,23 @@
+p {
+    text-indent: 50px;
+}
+h2 {
+    font-family: "Arial Narrow";
+    font-size: 200%;
+    color: black;
+}
+.In_Hoa{
+    font-family: "Times New Roman";
+    font-size: 120%;
+    color: black;
+}
+.Xanh_Dam{
+    font-family: "Times New Roman";
+    font-size: 120%;
+    color: blue;
+}
+.Xanh_Nhat{
+    font-family: "Times New Roman";
+    font-size: 120%;
+    color: aqua;
+}

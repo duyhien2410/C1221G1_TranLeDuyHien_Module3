@@ -333,16 +333,6 @@ select d_v.ma_dich_vu, d_v.ten_dich_vu, d_v.dien_tich, d_v.so_nguoi_toi_da,
 d_v.chi_phi_thue, l_d_v.ten_loai_dich_vu
 from dich_vu d_v inner join loai_dich_vu l_d_v on d_v.ma_loai_dich_vu = l_d_v.ma_loai_dich_vu
 inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
-where d_v.ten_dich_vu not in 
-(select d_v.ten_dich_vu 
-from dich_vu d_v inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
-where h_d.ngay_lam_hop_dong between '2021-01-01 00:00:00' and '2021-12-31 23:59:59')
-group by d_v.ten_dich_vu;
-
-select d_v.ma_dich_vu, d_v.ten_dich_vu, d_v.dien_tich, d_v.so_nguoi_toi_da,
-d_v.chi_phi_thue, l_d_v.ten_loai_dich_vu
-from dich_vu d_v inner join loai_dich_vu l_d_v on d_v.ma_loai_dich_vu = l_d_v.ma_loai_dich_vu
-inner join hop_dong h_d on d_v.ma_dich_vu = h_d.ma_dich_vu
 where h_d.ngay_lam_hop_dong between '2020-01-01 00:00:00' and '2020-12-31 23:59:59'
 group by d_v.ten_dich_vu
 having d_v.ten_dich_vu not in
@@ -399,7 +389,7 @@ where h_d.ngay_lam_hop_dong between '2020-10-01 00:00:00' and '2020-12-31 23:59:
 group by h_d.ma_hop_dong
 having d_v.ten_dich_vu not in
 (select d_v.ten_dich_vu from hop_dong h_d inner join dich_vu d_v on h_d.ma_dich_vu = d_v.ma_dich_vu
-where h_d.ngay_lam_hop_dong between '2021-01-01 00:00:00' and '2020-06-30 23:59:59');
+where h_d.ngay_lam_hop_dong between '2021-01-01 00:00:00' and '2021-06-30 23:59:59');
 
 -- TASK 13 (chưa chắc chắn)
 select d_v_d_k.ma_dich_vu_di_kem, d_v_d_k.ten_dich_vu_di_kem, 
@@ -509,6 +499,24 @@ select k_h.ma_khach_hang as id, k_h.ho_ten, k_h.email,
  from khach_hang k_h;
 
 -- TASK 21
+create or replace view v_nhan_vien as
+select nhan_vien.ma_nhan_vien,nhan_vien.ho_ten,nhan_vien.dia_chi from nhan_vien
+inner join hop_dong on nhan_vien.ma_nhan_vien= hop_dong.ma_nhan_vien
+where (nhan_vien.dia_chi like  '%Yên Bái%') and hop_dong.ngay_lam_hop_dong= '2021-04-25'
+group by hop_dong.ma_nhan_vien;
+
+select * from v_nhan_vien;
+
+drop view v_nhan_vien;
+
+
+-- TASK 22
+set sql_safe_updates=0;
+update nhan_vien
+set dia_chi ='Liên Chiểu'
+where  nhan_vien.dia_chi
+ in  (select dia_chi from v_nhan_vien as x);
+set sql_safe_updates=1;
 
 
 
