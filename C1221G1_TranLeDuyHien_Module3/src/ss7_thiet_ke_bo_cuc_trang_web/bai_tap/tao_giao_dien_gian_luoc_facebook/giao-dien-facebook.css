@@ -1,0 +1,48 @@
+header, footer {
+    position: relative;
+    background-color: blue;
+    color: white;
+    padding: 1px;
+}
+
+header {
+    height: 60px;
+}
+
+ul li {
+    padding: 10px;
+}
+
+.leftcolumn {
+    float: left;
+    position: relative;
+    font-size: 200%;
+    height: 1000px;
+    width: 300px;
+
+}
+
+.image1 {
+    width: 30px;
+    height: 30px;
+    border-radius: 360px;
+}
+
+#top-mid {
+    width: 1170px;
+    height: 50px;
+    position: relative;
+    text-align: center;
+}
+
+li {
+    display: inline;
+}
+li a{
+    color: white;
+    padding: 5px;
+}
+head {
+    display: inline;
+}
+
