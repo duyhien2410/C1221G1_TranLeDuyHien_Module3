@@ -20,14 +20,18 @@ public class ProductServlet extends HttpServlet {
         double discountAmount = listPrice*discountPercent*0.01;
         double discountPrice = listPrice - discountAmount;
 
-        PrintWriter writer = response.getWriter();
-        writer.println("<html>");
-        writer.println("<h1>Product Description: " + productName + "</h1>");
-        writer.println("<h1>List Price: " + listPrice + "</h1>");
-        writer.println("<h1>Discount Percent: " + discountPercent + "</h1>");
-        writer.println("<br>");
-        writer.println("<h1>Discount Amount: " + discountAmount + "</h1>");
-        writer.println("<h1>Discount Price: " + discountPrice + "</h1>");
-        writer.println("</html>");
+        request.setAttribute("productName",productName);
+        request.setAttribute("amount", discountAmount);
+        request.setAttribute("price", discountPrice);
+        request.getRequestDispatcher("result.jsp").forward(request,response);
+//        PrintWriter writer = response.getWriter();
+//        writer.println("<html>");
+//        writer.println("<h1>Product Description: " + productName + "</h1>");
+//        writer.println("<h1>List Price: " + listPrice + "</h1>");
+//        writer.println("<h1>Discount Percent: " + discountPercent + "</h1>");
+//        writer.println("<br>");
+//        writer.println("<h1>Discount Amount: " + discountAmount + "</h1>");
+//        writer.println("<h1>Discount Price: " + discountPrice + "</h1>");
+//        writer.println("</html>");
     }
 }
