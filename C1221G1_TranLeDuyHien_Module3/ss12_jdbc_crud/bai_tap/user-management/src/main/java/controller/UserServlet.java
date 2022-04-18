@@ -70,22 +70,19 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    private void listUser(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
+    private void listUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         List<User> listUser = userService.selectAllUsers();
         request.setAttribute("listUser", listUser);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/list.jsp");
         dispatcher.forward(request, response);
     }
 
-    private void showNewForm(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/create.jsp");
         dispatcher.forward(request, response);
     }
 
-    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, ServletException, IOException {
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         User existingUser = userService.selectUser(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/edit.jsp");
@@ -93,8 +90,7 @@ public class UserServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void insertUser(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
+    private void insertUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String country = request.getParameter("country");
@@ -104,8 +100,7 @@ public class UserServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void updateUser(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
+    private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String email = request.getParameter("email");
@@ -117,8 +112,7 @@ public class UserServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         userService.deleteUser(id);
 
