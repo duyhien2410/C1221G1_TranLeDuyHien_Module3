@@ -1,0 +1,50 @@
+/*body{*/
+/*    background-attachment: fixed;*/
+/*    background-image:url(https://dichvuseo.com/wp-content/uploads/2021/07/anh-nen-cho-website-27.jpg);*/
+/*    background-position: center center;*/
+/*    background-repeat: repeat;*/
+/*}*/
+
+#nav-link{
+    height: 40px;
+    line-height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #CDCDCD;
+    background-color: #F5F5F5;
+    margin-bottom:5px;
+    clear: both;
+    text-align: center;
+}
+
+a{
+    padding: 20px;
+}
+
+#nav-link-2{
+    display: block;
+    float: right;
+}
+
+.row li{
+    list-style: none;
+}
+
+#center-1{
+    border: 1px solid #CDCDCD;
+    background-color: #F5F5F5;
+}
+
+#center-2{
+    border: 1px solid #CDCDCD;
+    background-color: #F5F5F5;
+}
+
+header, footer{
+    border: 1px solid #CDCDCD;
+    background-color: #F5F5F5;
+}
+
+footer{
+    text-align: center;
+}
