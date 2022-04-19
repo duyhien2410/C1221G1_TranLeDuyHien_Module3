@@ -5,7 +5,9 @@
   Time: 8:31 AM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>$Title$</title>
@@ -26,7 +28,7 @@
 </header>
 <nav>
     <div class="row" id="nav-link">
-        <div class="col-8">
+        <div class="col-8" id="nav-link-1">
             <a href="#">Home</a>
             <a href="#">Employee</a>
             <a href="#">Customer</a>
