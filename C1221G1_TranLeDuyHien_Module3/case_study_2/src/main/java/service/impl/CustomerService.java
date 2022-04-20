@@ -25,4 +25,14 @@ public class CustomerService implements ICustomerService {
     public List<Customer> selectAllCustomer() {
         return this.customerRepository.selectAllCustomer();
     }
+
+    @Override
+    public void update(Customer customer) {
+        this.customerRepository.update(customer);
+    }
+
+    @Override
+    public void delete(int id) {
+        this.customerRepository.delete(id);
+    }
 }

@@ -31,7 +31,7 @@
         <div class="col-8" id="nav-link-1">
             <a href="#">Home</a>
             <a href="#">Employee</a>
-            <a href="#">Customer</a>
+            <a href="/customers">Customer</a>
             <a href="#">Service</a>
             <a href="#">Contract</a>
         </div>

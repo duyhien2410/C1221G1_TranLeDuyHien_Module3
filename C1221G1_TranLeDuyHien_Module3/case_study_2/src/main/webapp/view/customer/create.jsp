@@ -11,16 +11,24 @@
 <html>
 <head>
     <title>Title</title>
-
+    <link rel="stylesheet" href="/bootstrap-4.0.0-dist/css/bootstrap.css">
 </head>
 <body>
-<form method="post">
+<h2><a href="/customers?action=customers">List All Customers</a></h2>
+
+<form method="post" action="/customers?action=create">
 <fieldset>
     <legend><h3>Add New Customer</h3></legend>
     <table>
         <tr>
             <th>Customer type id:</th>
-            <td><input type="text" name="customerTypeId" id="customerTypeId" size="50"></td>
+            <td>
+                <select name="customerTypeId">
+                    <c:forEach var="customerTypeId" items="${customerTypeList}">
+                        <option value="${customerTypeId.customerTypeId}">${customerTypeId.customerTypeName}</option>
+                    </c:forEach>
+                </select>
+            </td>
         </tr>
         <tr>
             <th>Name:</th>
@@ -52,8 +60,10 @@
         </tr>
     </table>
 </fieldset>
+    <input type="submit" value="Save"/>
 </form>
 
-
+<link rel="stylesheet" href="/bootstrap-4.0.0-dist/js/bootstrap.bundle.js">
+<link rel="stylesheet" href="/bootstrap-4.0.0-dist/js/bootstrap.js">
 </body>
 </html>
