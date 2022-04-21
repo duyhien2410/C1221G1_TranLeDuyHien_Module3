@@ -30,9 +30,9 @@
     <div class="row" id="nav-link">
         <div class="col-8" id="nav-link-1">
             <a href="#">Home</a>
-            <a href="#">Employee</a>
+            <a href="/employees">Employee</a>
             <a href="/customers">Customer</a>
-            <a href="#">Service</a>
+            <a href="/services">Service</a>
             <a href="#">Contract</a>
         </div>
         <div class="col-4" id="nav-link-2">

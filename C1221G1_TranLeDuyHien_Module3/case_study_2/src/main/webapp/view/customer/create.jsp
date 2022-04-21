@@ -15,6 +15,7 @@
 </head>
 <body>
 <h2><a href="/customers?action=customers">List All Customers</a></h2>
+<h2><a href="/index.jsp">Home</a></h2>
 
 <form method="post" action="/customers?action=create">
 <fieldset>

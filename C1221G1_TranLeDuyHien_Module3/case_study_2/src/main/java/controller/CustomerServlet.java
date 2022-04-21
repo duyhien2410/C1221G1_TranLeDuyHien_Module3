@@ -1,11 +1,11 @@
 package controller;
 
-import model.Customer;
-import model.CustomerType;
-import service.ICustomerService;
-import service.ICustomerTypeService;
-import service.impl.CustomerService;
-import service.impl.CustomerTypeService;
+import model.customer.Customer;
+import model.customer.CustomerType;
+import service.customer_service.ICustomerService;
+import service.customer_service.ICustomerTypeService;
+import service.customer_service.impl.CustomerService;
+import service.customer_service.impl.CustomerTypeService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -38,13 +38,6 @@ public class CustomerServlet extends HttpServlet {
             case "update":
                 showUpdate(request, response);
                 break;
-            case "delete":
-                try {
-                    deleteCustomer(request,response);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                break;
             default:
                 listCustomer(request, response);
                 break;
@@ -65,6 +58,20 @@ public class CustomerServlet extends HttpServlet {
                 break;
             case "update":
                 updateCustomer(request,response);
+                break;
+            case "delete":
+                try {
+                    deleteCustomer(request, response);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "search":
+                try {
+                    searchCustomer(request, response);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
 
@@ -94,7 +101,9 @@ public class CustomerServlet extends HttpServlet {
 
     private void listCustomer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Customer> customerList = customerService.selectAllCustomer();
+        List<CustomerType> customerTypeList = customerTypeService.selectAll();
         request.setAttribute("customerList", customerList);
+        request.setAttribute("customerTypeList",customerTypeList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("view/customer/list.jsp");
         dispatcher.forward(request, response);
     }
@@ -148,5 +157,13 @@ public class CustomerServlet extends HttpServlet {
         } catch (ServletException e) {
             e.printStackTrace();
         }
+    }
+
+    private void searchCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        String name = request.getParameter("search");
+        List<Customer> customerList = customerService.searchCustomer(name);
+        request.setAttribute("customerList", customerList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/customer/list.jsp");
+        dispatcher.forward(request, response);
     }
 }
