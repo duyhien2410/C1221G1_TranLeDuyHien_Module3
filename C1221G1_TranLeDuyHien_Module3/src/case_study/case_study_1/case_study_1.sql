@@ -38,6 +38,7 @@ ma_loai_khach int auto_increment primary key,
 ten_loai_khach varchar(45)
 );
 
+
 create table khach_hang(
 ma_khach_hang int auto_increment primary key,
 ho_ten varchar(45) not null,
@@ -83,10 +84,10 @@ ngay_lam_hop_dong datetime not null,
 ngay_ket_thuc datetime not null,
 tien_dat_coc double not null,
 ma_nhan_vien int not null,
-ma_khach_hang int not null,
+ma_khach_hang int,
 ma_dich_vu int not null,
 foreign key (ma_nhan_vien) references nhan_vien(ma_nhan_vien),
-foreign key (ma_khach_hang) references khach_hang(ma_khach_hang),
+foreign key (ma_khach_hang) references khach_hang(ma_khach_hang) on delete set null,
 foreign key (ma_dich_vu) references dich_vu(ma_dich_vu)
 );
 
@@ -196,7 +197,7 @@ insert into khach_hang
 values (7,'Nguyễn Mỹ Kim','1984-04-08',0,'856453123',
 '0912345698','kimcuong84@gmail.com','K123/45 Lê Lợi, Hồ Chí Minh',1);
 insert into khach_hang
-values (8,'Nguyễn Thị Hào','1999-04-08',0,'965656433',
+values (8,'Đỗ Thị Định','1999-04-08',0,'965656433',
 '0763212345','haohao99@gmail.com','55 Nguyễn Văn Linh, Kon Tum',3);
 insert into khach_hang
 values (9,'Trần Đại Danh','1994-07-01',1,'432341235',

@@ -20,4 +20,24 @@ public class EmployeeService implements IEmployeeService {
     public List<Employee> selectAllEmployee() {
         return this.iEmployeeRepository.selectAllEmployee();
     }
+
+    @Override
+    public Employee selectEmployee(int id) {
+        return this.iEmployeeRepository.selectEmployee(id);
+    }
+
+    @Override
+    public void update(Employee employee) {
+        this.iEmployeeRepository.update(employee);
+    }
+
+    @Override
+    public void delete(int id) {
+        this.iEmployeeRepository.delete(id);
+    }
+
+    @Override
+    public List<Employee> searchEmployee(String name) {
+        return this.iEmployeeRepository.searchEmployee(name);
+    }
 }

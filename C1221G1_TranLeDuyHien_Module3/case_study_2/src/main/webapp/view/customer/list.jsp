@@ -27,7 +27,14 @@
         <a href="/index.jsp">Home</a>
     </h2>
     <form action="/customers?action=search" method="post">
-        <input type="text" name="search" placeholder="search">
+        <input type="text" name="name" placeholder="search name">
+        <input type="text" name="email" placeholder="search email">
+<%--        <input type="text" name="customerType" placeholder="search customerType">--%>
+        <select name="customerType">
+            <c:forEach var="customerType" items="${customerTypeList}">
+                <option value="${customerType.customerTypeId}">${customerType.customerTypeName}</option>
+            </c:forEach>
+        </select>
         <input type="submit" value="search">
     </form>
 </center>

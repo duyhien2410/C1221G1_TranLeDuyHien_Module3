@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CustomerRepositoryImpl implements ICustomerRepository {
     private static final String INSERT_CUSTOMER_SQL = "insert into khach_hang (ho_ten,ngay_sinh,gioi_tinh," +
@@ -20,6 +21,8 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
             "gioi_tinh=?,so_cmnd=?, so_dien_thoai=?, email=?, dia_chi=?, " +
             "ma_loai_khach=? where ma_khach_hang=?;";
     private static final String DELETE_CUSTOMER_SQL = "delete from khach_hang where ma_khach_hang = ?;";
+    private static final String SEARCH_CUSTOMER_SQL = "select * from khach_hang" +
+            " where ho_ten like ? and email like ? and ma_loai_khach like ?;";
 
     @Override
     public void insertCustomer(Customer customer) throws SQLException {
@@ -131,15 +134,42 @@ public class CustomerRepositoryImpl implements ICustomerRepository {
     }
 
     @Override
-    public List<Customer> searchCustomer(String name) {
-        List<Customer> customerList = new ArrayList<>();
-        List<Customer> customers = selectAllCustomer();
-        for (Customer customer : customers) {
-            if (customer.getCustomerName().toLowerCase().contains(name.toLowerCase())) {
-                customerList.add(customer);
+    public List<Customer> searchCustomer(String name,String email,String customerType) {
+        List<Customer> customers = new ArrayList<>();
+        try (PreparedStatement preparedStatement = BaseRepository.connection.prepareStatement(SEARCH_CUSTOMER_SQL)){
+            preparedStatement.setString(1,'%'+name+'%');
+            preparedStatement.setString(2,'%'+email+'%');
+            preparedStatement.setString(3,'%'+customerType+'%');
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Integer customerId = rs.getInt("ma_khach_hang");
+                Integer customerTypeId = rs.getInt("ma_loai_khach");
+                String customerName = rs.getString("ho_ten");
+                String customerBirthDay = rs.getString("ngay_sinh");
+                Integer customerGender = Integer.valueOf(rs.getString("gioi_tinh"));
+                String customerIdCard = rs.getString("so_cmnd");
+                String customerPhone = rs.getString("so_dien_thoai");
+                String customerEmail = rs.getString("email");
+                String customerAddress = rs.getString("dia_chi");
+
+                customers.add(new Customer(customerId, customerTypeId, customerName, customerBirthDay, customerGender,
+                        customerIdCard, customerPhone, customerEmail, customerAddress));
             }
+        } catch (SQLException e) {
+            printSQLException(e);
         }
-        return customerList;
+        return customers;
+//        List<Customer> customerList = new ArrayList<>();
+//        List<Customer> customers = selectAllCustomer();
+//        for (Customer customer : customers) {
+//            if (customer.getCustomerName().toLowerCase().contains(name.toLowerCase())
+//            &&customer.getCustomerEmail().toLowerCase().contains(email.toLowerCase())
+//            &&customer.getCustomerPhone().toLowerCase().contains(phone.toLowerCase())) {
+//                customerList.add(customer);
+//            }
+//        }
+//        return customerList;
     }
 
     private void printSQLException(SQLException ex) {

@@ -1,5 +1,6 @@
 package controller;
 
+import model.customer.Customer;
 import model.customer.CustomerType;
 import model.employee.Department;
 import model.employee.Employee;
@@ -50,7 +51,7 @@ public class EmployeeServlet extends HttpServlet {
                 showCreate(request, response);
                 break;
             case "update":
-//                showUpdate(request, response);
+                showUpdate(request, response);
                 break;
             default:
                 listEmployee(request, response);
@@ -69,23 +70,23 @@ public class EmployeeServlet extends HttpServlet {
             case "create":
                 insertEmployee(request, response);
                 break;
-//            case "update":
-//                updateCustomer(request,response);
-//                break;
-//            case "delete":
-//                try {
-//                    deleteCustomer(request, response);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
-//            case "search":
-//                try {
-//                    searchCustomer(request, response);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
+            case "update":
+                updateEmployee(request,response);
+                break;
+            case "delete":
+                try {
+                    deleteEmployee(request, response);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "search":
+                try {
+                    searchEmployee(request, response);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
 
     }
@@ -139,4 +140,60 @@ public class EmployeeServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    private void showUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        Integer employeeId = Integer.parseInt(request.getParameter("employeeId"));
+        List<Level> levelList = levelService.selectAll();
+        request.setAttribute("levelList", levelList);
+        List<Position> positionList = positionService.selectAll();
+        request.setAttribute("positionList", positionList);
+        List<Department> departmentList = departmentService.selectAll();
+        request.setAttribute("departmentList", departmentList);
+        Employee employee = employeeService.selectEmployee(employeeId);
+        request.setAttribute("employee", employee);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/employee/update.jsp");
+        dispatcher.forward(request, response);
+
+    }
+
+    private void updateEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer employeeId = Integer.parseInt(request.getParameter("employeeId"));
+        String name = request.getParameter("name");
+        String birthDay = request.getParameter("birthDay");
+        String idCard = request.getParameter("idCard");
+        Double wage = Double.parseDouble(request.getParameter("wage"));
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        String address = request.getParameter("address");
+        Integer positionId = Integer.valueOf(request.getParameter("positionId"));
+        Integer levelId = Integer.valueOf(request.getParameter("levelId"));
+        Integer departmentId = Integer.valueOf(request.getParameter("departmentId"));
+
+        Employee employee = new Employee(employeeId,name, birthDay,idCard,wage,
+                phone,email,address,positionId,levelId,departmentId);
+        employeeService.update(employee);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/employee/update.jsp");
+        dispatcher.forward(request,response);
+    }
+
+    private void deleteEmployee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException{
+        Integer employeeId = Integer.parseInt(request.getParameter("employeeId"));
+        employeeService.delete(employeeId);
+
+        List<Employee> employeeList = employeeService.selectAllEmployee();
+        request.setAttribute("employeeList",employeeList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/employee/list.jsp");
+        try {
+            dispatcher.forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void searchEmployee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
+        String name = request.getParameter("search");
+        List<Employee> employeeList = employeeService.searchEmployee(name);
+        request.setAttribute("employeeList", employeeList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("view/employee/list.jsp");
+        dispatcher.forward(request, response);
+    }
 }

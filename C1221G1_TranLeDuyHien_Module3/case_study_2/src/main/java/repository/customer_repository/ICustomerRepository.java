@@ -11,5 +11,5 @@ public interface ICustomerRepository {
     public List<Customer> selectAllCustomer();
     public void update(Customer customer);
     public void delete(int id);
-    public List<Customer> searchCustomer(String name);
+    public List<Customer> searchCustomer(String name,String email,String customerType);
 }

@@ -45,15 +45,15 @@
         </tr>
         <tr>
             <th>Id card:</th>
-            <td><input type="text" name="customerIdCard" id="customerIdCard" size="50"></td>
+            <td><input type="text" name="customerIdCard" id="customerIdCard" size="50">${error.get("cmnd")}</td>
         </tr>
         <tr>
             <th>Phone:</th>
-            <td><input type="text" name="customerPhone" id="customerPhone" size="50"></td>
+            <td><input type="text" name="customerPhone" id="customerPhone" size="50">${error.get("phone")}</td>
         </tr>
         <tr>
             <th>Email:</th>
-            <td><input type="text" name="customerEmail" id="customerEmail" size="50"></td>
+            <td><input type="text" name="customerEmail" id="customerEmail" size="50">${error.get("email")}</td>
         </tr>
         <tr>
             <th>Address:</th>

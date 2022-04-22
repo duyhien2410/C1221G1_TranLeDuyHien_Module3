@@ -13,6 +13,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "CustomerServlet", urlPatterns = "/customers")
 public class CustomerServlet extends HttpServlet {
@@ -78,6 +79,8 @@ public class CustomerServlet extends HttpServlet {
     }
 
     private void insertCustomer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<CustomerType> customerTypeList = customerTypeService.selectAll();
+        request.setAttribute("customerTypeList", customerTypeList);
         Integer customerTypeId = Integer.valueOf(request.getParameter("customerTypeId"));
         String customerName = request.getParameter("customerName");
         String customerBirthday = request.getParameter("customerBirthday");
@@ -89,6 +92,14 @@ public class CustomerServlet extends HttpServlet {
 
         Customer newCustomer = new Customer(customerTypeId, customerName, customerBirthday, customerGender,
                 customerIdCard, customerPhone, customerEmail, customerAddress);
+        Map<String,String> map = null;
+        try {
+            map = customerService.insertCustomer(newCustomer);
+            request.setAttribute("error", map);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         try {
             customerService.insertCustomer(newCustomer);
         } catch (SQLException e) {
@@ -160,10 +171,13 @@ public class CustomerServlet extends HttpServlet {
     }
 
     private void searchCustomer(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException {
-        String name = request.getParameter("search");
-        List<Customer> customerList = customerService.searchCustomer(name);
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String customerType = request.getParameter("customerType");
+        List<Customer> customerList = customerService.searchCustomer(name,email,customerType);
         request.setAttribute("customerList", customerList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("view/customer/list.jsp");
         dispatcher.forward(request, response);
+
     }
 }
