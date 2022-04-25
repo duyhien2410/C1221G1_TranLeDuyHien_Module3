@@ -24,11 +24,11 @@ public class ServiceRepositoryImpl implements IServiceRepository {
             preparedStatement.setString(1, service.getServiceName());
             preparedStatement.setInt(2, service.getArea());
             preparedStatement.setDouble(3, service.getCosts());
-            preparedStatement.setInt(4, service.getPeopleMax());
+            preparedStatement.setString(4, service.getPeopleMax());
             preparedStatement.setString(5, service.getStandardRoom());
             preparedStatement.setString(6, service.getConvenientOther());
             preparedStatement.setDouble(7, service.getAreaPool());
-            preparedStatement.setInt(8, service.getNumberFloor());
+            preparedStatement.setString(8, service.getNumberFloor());
             preparedStatement.setInt(9, service.getTypeRentId());
             preparedStatement.setInt(10, service.getTypeServiceId());
             System.out.println(preparedStatement);
@@ -50,11 +50,11 @@ public class ServiceRepositoryImpl implements IServiceRepository {
                 String serviceName = rs.getString("ten_dich_vu");
                 Integer area = rs.getInt("dien_tich");
                 Double costs = rs.getDouble("chi_phi_thue");
-                Integer peopleMax = Integer.valueOf(rs.getString("so_nguoi_toi_da"));
+                String peopleMax = rs.getString("so_nguoi_toi_da");
                 String standardRoom = rs.getString("tieu_chuan_phong");
                 String convenientOther = rs.getString("mo_ta_tien_nghi_khac");
                 Double areaPool = rs.getDouble("dien_tich_ho_boi");
-                Integer numberFloor = rs.getInt("so_tang");
+                String numberFloor = rs.getString("so_tang");
                 Integer typeRentId = rs.getInt("ma_kieu_thue");
                 Integer typeServiceId = rs.getInt("ma_loai_dich_vu");
 

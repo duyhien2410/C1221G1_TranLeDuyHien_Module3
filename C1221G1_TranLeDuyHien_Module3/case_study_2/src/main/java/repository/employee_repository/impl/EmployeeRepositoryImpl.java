@@ -33,7 +33,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
             preparedStatement.setString(1, employee.getName());
             preparedStatement.setString(2, employee.getBirthDay());
             preparedStatement.setString(3, employee.getIdCard());
-            preparedStatement.setDouble(4, employee.getWage());
+            preparedStatement.setString(4, employee.getWage());
             preparedStatement.setString(5, employee.getPhone());
             preparedStatement.setString(6, employee.getEmail());
             preparedStatement.setString(7, employee.getAddress());
@@ -59,7 +59,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                 String name = rs.getString("ho_ten");
                 String birthDay = rs.getString("ngay_sinh");
                 String idCard = rs.getString("so_cmnd");
-                Double wage = Double.parseDouble(rs.getString("luong"));
+                String wage = rs.getString("luong");
                 String phone = rs.getString("so_dien_thoai");
                 String email = rs.getString("email");
                 String address = rs.getString("dia_chi");
@@ -89,7 +89,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                 String name = rs.getString("ho_ten");
                 String birthDay = rs.getString("ngay_sinh");
                 String idCard = rs.getString("so_cmnd");
-                Double wage = Double.valueOf(rs.getString("luong"));
+                String wage = rs.getString("luong");
                 String phone = rs.getString("so_dien_thoai");
                 String email = rs.getString("email");
                 String address = rs.getString("dia_chi");
@@ -116,7 +116,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
             preparedStatement.setString(1, employee.getName());
             preparedStatement.setString(2, employee.getBirthDay());
             preparedStatement.setString(3, employee.getIdCard());
-            preparedStatement.setDouble(4, employee.getWage());
+            preparedStatement.setString(4, employee.getWage());
             preparedStatement.setString(5, employee.getPhone());
             preparedStatement.setString(6, employee.getEmail());
             preparedStatement.setString(7, employee.getAddress());

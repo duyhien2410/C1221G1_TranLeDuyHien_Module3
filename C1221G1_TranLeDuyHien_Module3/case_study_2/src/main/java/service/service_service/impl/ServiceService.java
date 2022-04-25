@@ -14,20 +14,23 @@ public class ServiceService implements IServiceService {
     IServiceRepository serviceRepository = new ServiceRepositoryImpl();
 
     @Override
-    public Map<Integer,String> insertServices(Service service) throws SQLException {
-        Map<Integer,String> map = new HashMap<>();
-            if (service.getPeopleMax().equals("")){
+    public Map<String, String> insertServices(Service service) throws SQLException {
+        Map<String, String> map = new HashMap<>();
+        if (service.getPeopleMax().equals("")) {
+            map.put("max", "Số người tối đa không được để trống");
+        } else if (!service.getPeopleMax().matches("^[1-9]\\d*$")) {
+            map.put("max", "Số người tối đa phải là số nguyên dương");
+        }
 
-            }
-//        if (customer.getCustomerEmail().equals("")){
-//            map.put("email","Email không được để trống");
-//        } else if (!customer.getCustomerEmail().matches("^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$")){
-//            map.put("email","Email không hợp lệ");
-//        }
-//
-//        if (map.isEmpty()){
-//            customerRepository.insertCustomer(customer);
-//        }
+        if (service.getNumberFloor().equals("")) {
+            map.put("floor", "Số tầng không được để trống");
+        } else if (!service.getNumberFloor().matches("^[1-9]\\d*$")) {
+            map.put("floor", "Số tầng phải là số nguyên dương");
+        }
+
+        if (map.isEmpty()) {
+            serviceRepository.insertServices(service);
+        }
 
         return map;
     }

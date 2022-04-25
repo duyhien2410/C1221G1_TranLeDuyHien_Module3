@@ -14,7 +14,9 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "ServiceServlet", urlPatterns = "/services")
 public class ServiceServlet extends HttpServlet {
@@ -35,9 +37,6 @@ public class ServiceServlet extends HttpServlet {
             case "create":
                 showCreate(request, response);
                 break;
-            case "update":
-//                showUpdate(request, response);
-                break;
             default:
                 listService(request, response);
                 break;
@@ -55,23 +54,6 @@ public class ServiceServlet extends HttpServlet {
             case "create":
                 insertServices(request, response);
                 break;
-//            case "update":
-//                updateCustomer(request,response);
-//                break;
-//            case "delete":
-//                try {
-//                    deleteCustomer(request, response);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
-//            case "search":
-//                try {
-//                    searchCustomer(request, response);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
         }
 
     }
@@ -80,16 +62,24 @@ public class ServiceServlet extends HttpServlet {
         String serviceName = request.getParameter("serviceName");
         Integer area = Integer.parseInt(request.getParameter("area"));
         Double costs = Double.parseDouble(request.getParameter("costs"));
-        Integer peopleMax = Integer.valueOf(request.getParameter("peopleMax"));
+        String peopleMax = request.getParameter("peopleMax");
         String standardRoom = request.getParameter("standardRoom");
         String convenientOther = request.getParameter("convenientOther");
         Double areaPool = Double.parseDouble(request.getParameter("areaPool"));
-        Integer numberFloor = Integer.parseInt(request.getParameter("numberFloor"));
+        String numberFloor = request.getParameter("numberFloor");
         Integer typeRentId = Integer.parseInt(request.getParameter("typeRentId"));
         Integer typeServiceId = Integer.parseInt(request.getParameter("typeServiceId"));
 
         Service service = new Service(serviceName, area, costs, peopleMax,
                 standardRoom, convenientOther, areaPool, numberFloor,typeRentId,typeServiceId);
+        Map<String,String> map = null;
+        try {
+            map = serviceService.insertServices(service);
+            request.setAttribute("error", map);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         try {
             serviceService.insertServices(service);
         } catch (SQLException e) {

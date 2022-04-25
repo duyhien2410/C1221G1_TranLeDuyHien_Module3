@@ -5,19 +5,19 @@ public class Service {
     private String serviceName;
     private Integer area;
     private Double costs;           //chi phí thuê
-    private Integer peopleMax;      //số người tối đa
+    private String peopleMax;      //số người tối đa
     private String standardRoom;    //tiêu chuẩn phòng
     private String convenientOther; //tiện nghi khác
     private Double areaPool;        //diện tích hồ bơi
-    private Integer numberFloor;    //số tầng
+    private String numberFloor;    //số tầng
     private Integer typeRentId;     //mã kiểu thuê
     private Integer typeServiceId;  //mã loại dịch dụ
 
     public Service() {
     }
 
-    public Service(String serviceName, Integer area, Double costs, Integer peopleMax, String standardRoom,
-                   String convenientOther, Double areaPool, Integer numberFloor, Integer typeRentId, Integer typeServiceId) {
+    public Service(String serviceName, Integer area, Double costs, String peopleMax, String standardRoom,
+                   String convenientOther, Double areaPool, String numberFloor, Integer typeRentId, Integer typeServiceId) {
         this.serviceName = serviceName;
         this.area = area;
         this.costs = costs;
@@ -30,8 +30,8 @@ public class Service {
         this.typeServiceId = typeServiceId;
     }
 
-    public Service(Integer serviceID, String serviceName, Integer area, Double costs, Integer peopleMax,
-                   String standardRoom, String convenientOther, Double areaPool, Integer numberFloor, Integer typeRentId,
+    public Service(Integer serviceID, String serviceName, Integer area, Double costs, String peopleMax,
+                   String standardRoom, String convenientOther, Double areaPool, String numberFloor, Integer typeRentId,
                    Integer typeServiceId) {
         this.serviceID = serviceID;
         this.serviceName = serviceName;
@@ -78,11 +78,11 @@ public class Service {
         this.costs = costs;
     }
 
-    public Integer getPeopleMax() {
+    public String getPeopleMax() {
         return peopleMax;
     }
 
-    public void setPeopleMax(Integer peopleMax) {
+    public void setPeopleMax(String peopleMax) {
         this.peopleMax = peopleMax;
     }
 
@@ -110,11 +110,11 @@ public class Service {
         this.areaPool = areaPool;
     }
 
-    public Integer getNumberFloor() {
+    public String getNumberFloor() {
         return numberFloor;
     }
 
-    public void setNumberFloor(Integer numberFloor) {
+    public void setNumberFloor(String numberFloor) {
         this.numberFloor = numberFloor;
     }
 

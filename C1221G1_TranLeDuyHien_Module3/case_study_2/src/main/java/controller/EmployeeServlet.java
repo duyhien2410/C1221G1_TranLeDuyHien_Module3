@@ -24,6 +24,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "EmployeeServlet", urlPatterns = "/employees")
 public class EmployeeServlet extends HttpServlet {
@@ -71,7 +72,7 @@ public class EmployeeServlet extends HttpServlet {
                 insertEmployee(request, response);
                 break;
             case "update":
-                updateEmployee(request,response);
+                updateEmployee(request, response);
                 break;
             case "delete":
                 try {
@@ -91,11 +92,17 @@ public class EmployeeServlet extends HttpServlet {
 
     }
 
-    private void insertEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    private void insertEmployee(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Level> levelList = levelService.selectAll();
+        request.setAttribute("levelList", levelList);
+        List<Position> positionList = positionService.selectAll();
+        request.setAttribute("positionList", positionList);
+        List<Department> departmentList = departmentService.selectAll();
+        request.setAttribute("departmentList", departmentList);
         String name = request.getParameter("name");
         String birthDay = request.getParameter("birthDay");
         String idCard = request.getParameter("idCard");
-        Double wage = Double.parseDouble(request.getParameter("wage"));
+        String wage = request.getParameter("wage");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
@@ -104,7 +111,16 @@ public class EmployeeServlet extends HttpServlet {
         Integer departmentId = Integer.parseInt(request.getParameter("departmentId"));
 
         Employee employee = new Employee(name, birthDay, idCard, wage,
-                phone, email, address, positionId,levelId,departmentId);
+                phone, email, address, positionId, levelId, departmentId);
+
+        Map<String, String> map = null;
+        try {
+            map = employeeService.insertEmployee(employee);
+            request.setAttribute("error", map);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         try {
             employeeService.insertEmployee(employee);
         } catch (SQLException e) {
@@ -123,7 +139,7 @@ public class EmployeeServlet extends HttpServlet {
         request.setAttribute("employeeList", employeeList);
         request.setAttribute("levelList", levelList);
         request.setAttribute("positionList", positionList);
-        request.setAttribute("departmentList",departmentList);
+        request.setAttribute("departmentList", departmentList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("view/employee/list.jsp");
         dispatcher.forward(request, response);
     }
@@ -134,13 +150,13 @@ public class EmployeeServlet extends HttpServlet {
         List<Position> positionList = positionService.selectAll();
         request.setAttribute("positionList", positionList);
         List<Department> departmentList = departmentService.selectAll();
-        request.setAttribute("departmentList",departmentList);
+        request.setAttribute("departmentList", departmentList);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("view/employee/create.jsp");
         dispatcher.forward(request, response);
     }
 
-    private void showUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    private void showUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer employeeId = Integer.parseInt(request.getParameter("employeeId"));
         List<Level> levelList = levelService.selectAll();
         request.setAttribute("levelList", levelList);
@@ -160,7 +176,7 @@ public class EmployeeServlet extends HttpServlet {
         String name = request.getParameter("name");
         String birthDay = request.getParameter("birthDay");
         String idCard = request.getParameter("idCard");
-        Double wage = Double.parseDouble(request.getParameter("wage"));
+        String wage = request.getParameter("wage");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
@@ -168,22 +184,22 @@ public class EmployeeServlet extends HttpServlet {
         Integer levelId = Integer.valueOf(request.getParameter("levelId"));
         Integer departmentId = Integer.valueOf(request.getParameter("departmentId"));
 
-        Employee employee = new Employee(employeeId,name, birthDay,idCard,wage,
-                phone,email,address,positionId,levelId,departmentId);
+        Employee employee = new Employee(employeeId, name, birthDay, idCard, wage,
+                phone, email, address, positionId, levelId, departmentId);
         employeeService.update(employee);
         RequestDispatcher dispatcher = request.getRequestDispatcher("view/employee/update.jsp");
-        dispatcher.forward(request,response);
+        dispatcher.forward(request, response);
     }
 
-    private void deleteEmployee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException{
+    private void deleteEmployee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         Integer employeeId = Integer.parseInt(request.getParameter("employeeId"));
         employeeService.delete(employeeId);
 
         List<Employee> employeeList = employeeService.selectAllEmployee();
-        request.setAttribute("employeeList",employeeList);
+        request.setAttribute("employeeList", employeeList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("view/employee/list.jsp");
         try {
-            dispatcher.forward(request,response);
+            dispatcher.forward(request, response);
         } catch (ServletException e) {
             e.printStackTrace();
         }

@@ -21,16 +21,6 @@
     <fieldset>
         <legend><h3>Add New Service</h3></legend>
         <table>
-            <%--            <tr>--%>
-            <%--                <th>Customer type id:</th>--%>
-            <%--                <td>--%>
-            <%--                    <select name="customerTypeId">--%>
-            <%--                        <c:forEach var="customerTypeId" items="${customerTypeList}">--%>
-            <%--                            <option value="${customerTypeId.customerTypeId}">${customerTypeId.customerTypeName}</option>--%>
-            <%--                        </c:forEach>--%>
-            <%--                    </select>--%>
-            <%--                </td>--%>
-            <%--            </tr>--%>
             <tr>
                 <th>Name:</th>
                 <td><input type="text" name="serviceName" id="serviceName" size="50"></td>
@@ -45,7 +35,7 @@
             </tr>
             <tr>
                 <th>PeopleMax:</th>
-                <td><input type="text" name="peopleMax" id="peopleMax" size="50"></td>
+                <td><input type="text" name="peopleMax" id="peopleMax" size="50">${error.get("max")}</td>
             </tr>
             <tr>
                 <th>StandardRoom:</th>
@@ -61,7 +51,7 @@
             </tr>
             <tr>
                 <th>NumberFloor:</th>
-                <td><input type="text" name="numberFloor" id="numberFloor" size="50"></td>
+                <td><input type="text" name="numberFloor" id="numberFloor" size="50">${error.get("floor")}</td>
             </tr>
             <tr>
                 <th>TypeRentId:</th>

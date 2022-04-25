@@ -37,7 +37,7 @@
         </tr>
         <tr>
             <th>Birth day:</th>
-            <td><input type="text" name="customerBirthday" id="customerBirthday" size="50"></td>
+            <td><input type="date" name="customerBirthday" id="customerBirthday" size="50"></td>
         </tr>
         <tr>
             <th>Gender:</th>

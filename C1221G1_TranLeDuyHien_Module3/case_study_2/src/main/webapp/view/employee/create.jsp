@@ -27,7 +27,7 @@
             </tr>
             <tr>
                 <th>Birth day:</th>
-                <td><input type="text" name="birthDay" id="birthDay" size="50"></td>
+                <td><input type="date" name="birthDay" id="birthDay" size="50"></td>
             </tr>
             <tr>
                 <th>Employee id card:</th>
@@ -35,11 +35,11 @@
             </tr>
             <tr>
                 <th>Wage:</th>
-                <td><input type="text" name="wage" id="wage" size="50"></td>
+                <td><input type="text" name="wage" id="wage" size="50">${error.get("wage")}</td>
             </tr>
             <tr>
                 <th>Number of phone:</th>
-                <td><input type="text" name="phone" id="phone" size="50"></td>
+                <td><input type="text" name="phone" id="phone" size="50">${error.get("phone")}</td>
             </tr>
             <tr>
                 <th>Email:</th>

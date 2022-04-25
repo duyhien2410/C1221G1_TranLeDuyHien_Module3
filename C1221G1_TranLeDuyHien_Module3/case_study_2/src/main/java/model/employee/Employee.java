@@ -5,7 +5,7 @@ public class Employee {
     private String name;
     private String birthDay;
     private String idCard;
-    private Double wage;        //lương
+    private String wage;        //lương
     private String phone;
     private String email;
     private String address;
@@ -16,7 +16,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String name, String birthDay, String idCard, Double wage, String phone, String email,
+    public Employee(String name, String birthDay, String idCard, String wage, String phone, String email,
                     String address, Integer positionId, Integer levelId, Integer departmentId) {
         this.name = name;
         this.birthDay = birthDay;
@@ -30,7 +30,7 @@ public class Employee {
         this.departmentId = departmentId;
     }
 
-    public Employee(Integer employeeId, String name, String birthDay, String idCard, Double wage, String phone,
+    public Employee(Integer employeeId, String name, String birthDay, String idCard, String wage, String phone,
                     String email, String address, Integer positionId, Integer levelId, Integer departmentId) {
         this.employeeId = employeeId;
         this.name = name;
@@ -77,11 +77,11 @@ public class Employee {
         this.idCard = idCard;
     }
 
-    public Double getWage() {
+    public String getWage() {
         return wage;
     }
 
-    public void setWage(Double wage) {
+    public void setWage(String wage) {
         this.wage = wage;
     }
 
